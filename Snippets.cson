@@ -1,0 +1,255 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#     'prefix': 'log'
+#     'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
+
+'.source.js':
+  'Beans!':
+    'prefix': 'Beans'
+    'body': 'console.log(\'Beans!\');'
+  'Rats!':
+    'prefix': 'Rats'
+    'body': 'console.log(\'Rats!\');'
+  #Bx Slider Snippets
+  'Bx Slider Template':
+    'prefix': 'New Bx Slider'
+    'body': """
+            jQuery(document).ready(function() {
+              jQuery('${1:Parent Element}').bxSlider({
+                speed: 500,
+                mode: 'horizontal',
+                slideMargin: 0,
+                startslide: 0,
+                randomStart: false,
+                slideSelector: '',
+                infiniteLoop: true,
+                hideControlOnEnd: false,
+                easing: null,
+                captions: false,
+                ticker: false,
+                tickerHover: false,
+                adaptiveHeight: false,
+                adaptiveHeightSpeed: 500,
+                video: false,
+                responsive: true,
+                useCSS: true,
+                preloadImages: 'visible',
+                touchEnabled: true,
+                swipeThreshold: 50,
+                oneToOneTouch: true,
+                preventDefaultSwipeX: true,
+                preventDefaultSwipeY: false,
+                wrapperClass: 'bx-wrapper',
+                pager: true,
+                pagerType: 'full',
+                pagerShortSeparator: '/',
+                pagerSelector: '',
+                pagerCustom: null,
+                buildPager: null,
+                controls: true,
+                nextText: 'Next',
+                prevText: 'Prev',
+                nextSelector: null,
+                prevSelector: null,
+                autoControls: false,
+                startText: 'Start',
+                stopText: 'Stop',
+                autoControlsCombine: false,
+                autoControlsSelector: null,
+                keyboardEnabled: false,
+                auto: false,
+                stopAutoOnClick: false,
+                pause: 4000,
+                autoStart: true,
+                autoDirection: 'next',
+                autoHover: false,
+                autoDelay: 0,
+                minSlides: 1,
+                masSlides: 1,
+                moveSlides: 0,
+                slideWidth: 0,
+                shrinkItems: false,
+                ariaLive: true,
+                ariaHidden: true
+              });
+            });
+            """
+  # Comment Template
+  'Comment Template' :
+    'prefix': 'Comment'
+    'body': """
+            // =============================================================================
+            // ${1:"Comment Goes Here"} ===========================================================$2
+            """
+
+# Php Stuff
+'.text.html.php':
+  # Short Code Template
+  'Shortcode Template':
+    'prefix': 'New ShortCode'
+    'body': """
+              function shortCode${1:name}( $atts ) {
+                ob_start();
+                $vars = shortcode_atts(array = (
+                  '${3:Custom Atribute Name}' => '${4:Default Value}'
+                ), $atts)
+                $query = new WP_Query( array(
+                    'post_type' => '${5:Post Type}',
+                    'order' => 'ASC',
+                    'posts_per_page' => '-1',
+                ) );
+                //Begin if posts conditional
+                if ( $query->have_posts() ) { ?>
+
+                        <?php $incrementNum = 0; ?>
+                        //Begin post loop
+                        <?php while ( $query->have_posts()) : $query->the_post(); ?>
+                          <?php $postUrl = get_permalink(); ?>
+                          <?php $title = get_the_title();  ?>
+                          <?php $date =  get_the_date(); ?>
+                          <?php $category = get_the_category(); ?>
+                          <?php $thumbnailUrl = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'XXCustomImageSizeXX' )[0]; ?>
+
+                          <div>
+                            Html Here
+                          </div>
+
+                          <?php $incrementNum++; ?>
+                        <?php endwhile;
+                        //End post Loop
+                        wp_reset_postdata(); ?>
+
+                <?php $myvariable = ob_get_clean();
+                return $myvariable;
+                }
+                //End if posts conditional
+            }
+            add_shortcode( '${2:name}', 'shortCode${1:name}' );
+            """
+  # Comment Template
+  'Comment Template' :
+    'prefix': 'Comment'
+    'body': """
+            // =============================================================================
+            // ${1:"Comment Goes Here"} ===========================================================$2
+            """
+  # Create post Type Template
+  'New Post Type Template' :
+    'prefix': 'New Post Type'
+    'body': """
+            function create_post_type_template() {
+              register_post_type('${1:Post Type}',
+                array(
+                  'labels' => array(
+                    'name' => __('${1:Post Type}'),
+                    'singular_name' => __('${2:Single Post}')
+                  ),
+                  'public' => true,
+                  'has_archive' => true,
+                  'supports' => array( 'title','thumbnail' ),
+                )
+              );
+            }
+            add_action('init', 'create_post_type_template');
+            """
+  # Custom Image Sizes Template
+  'Custom Image Sizes' :
+    'prefix': 'Custom Image Sizes'
+    'body': """
+            add_theme_support('post-thumbnails');
+
+            //Duplicate these and change name to add new Image Sizes
+            ${1:add_image_size('Example-Image-Size', 150H, 100W, true);}
+
+            add_filter('image_size_names_choose', 'custom_image_sizes');
+
+            //This Adds The image size to the media library
+            function custom_image_sizes ($sizes) {
+              return array_merge( $sizes, array (
+                'Image-Size-Name' => __('Media libary Name')
+              ));
+            }
+            """
+  #New Image Sizes Template
+  'New Image Sizes':
+    'prefix': 'New Image Size'
+    'body': """
+            add_image_size('${1:Slide Name}', ${2:Width}, ${3:height}, true);
+            """
+  #Initializes Bx Slider
+  "Init Bx Slider":
+    prefix: "Init Bx Slider"
+    body: """
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+          """
+#Css Stuff
+'.source.css':
+  #Avada Elements
+  'fusion-column-wrapper':
+    'prefix': 'fusion-column-wrapper'
+    'body': 'fusion-column-wrapper'
+  'fusion-column':
+    'prefix': 'fusion-column'
+    'body': 'fusion-column'
+
+#React Stuff
+".source.js, .source.jsx, .source.ts, .source.tsx":
+  "New Component":
+    prefix: "_component"
+    body: "export class --Component-- extends React.Component{}"
+
+#Html Snippets
+".html.text":
+  #Initializes Bx Slider
+  "Init Bx Slider":
+    prefix: "Init Bx Slider"
+    body:   """
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+            """
+
+#CoffeeScript Stuff
+".source.coffee":
+  #New Snippet With Source
+  "New Source Snippet":
+    prefix: "New Source Snippet"
+    body: """
+          #${1:Snippet Language}
+          "${2:Snippet Source}":
+            "${3:Snippet Name}":
+              prefix: "${3:Snippet Name}"
+              body:   \"""
+                      ${4:Snippet Content}
+                      \"""
+
+          """
+  #New Snippet Sithout Source
+  "New Snippet":
+    prefix: "New Snippet"
+    body: """
+          "${1:Snippet Name}":
+            prefix: "${1:Snippet Name}"
+            body: \"""
+                  ${2:Snippet Content}
+                  \"""
+          """
